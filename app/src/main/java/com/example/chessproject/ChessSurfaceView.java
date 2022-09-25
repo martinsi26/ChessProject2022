@@ -9,17 +9,17 @@ import android.view.SurfaceView;
 
 public class ChessSurfaceView extends SurfaceView {
 
-    private Paint black;
-    Rect newRect;
+    //private Paint black;
+    //private Rect newRect;
 
     public ChessSurfaceView(Context context) {
         super(context);
         setWillNotDraw(false);
 
-        newRect = new Rect(10,10,50,50);
+        //newRect = new Rect(10,10,50,50);
 
-        black = new Paint();
-        black.setColor(Color.BLACK);
+        //black = new Paint();
+        //black.setColor(Color.BLACK);
 
     }
 
