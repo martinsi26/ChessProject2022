@@ -44,11 +44,11 @@
                 android:layout_weight="1"
                 android:orientation="horizontal">
 
-                <com.example.chessproject.ChessSurfaceView
+                <SurfaceView
                     android:id="@+id/chessBoard"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="#3FCF45" />
+                    android:layout_weight="1" />
             </LinearLayout>
 
             <LinearLayout
