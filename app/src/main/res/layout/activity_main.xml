@@ -42,13 +42,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
+                android:background="#4CAF50"
                 android:orientation="horizontal">
 
-                <SurfaceView
+                <com.example.chessproject.ChessSurfaceView
                     android:id="@+id/chessBoard"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_weight="1" />
+                    android:layout_weight="1"
+                    android:background="#4CAF50" />
             </LinearLayout>
 
             <LinearLayout

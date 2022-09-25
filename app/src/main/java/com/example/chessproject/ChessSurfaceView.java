@@ -19,6 +19,7 @@ public class ChessSurfaceView extends SurfaceView {
 
         newRect = new Rect(100,100,200,200);
 
+
         black = new Paint();
         black.setColor(Color.WHITE);
 
