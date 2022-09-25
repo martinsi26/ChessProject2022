@@ -12,7 +12,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //ChessSurfaceView chessSurfaceView = findViewById(R.id.chessBoard);
+        ChessSurfaceView chessSurfaceView = findViewById(R.id.chessBoard);
 
 
     }
