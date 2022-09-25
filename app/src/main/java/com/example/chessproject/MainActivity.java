@@ -13,7 +13,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ChessSurfaceView chessSurfaceView = findViewById(R.id.chessBoard);
-
+        BlackCapturesSurfaceView blackCapturesSurfaceView = findViewById(R.id.blackCaptures);
+        WhiteCapturesSurfaceView whiteCapturesSurfaceView = findViewById(R.id.whiteCaptures);
 
     }
 }
