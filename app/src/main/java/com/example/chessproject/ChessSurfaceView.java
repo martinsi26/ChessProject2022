@@ -6,7 +6,6 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import android.widget.TextView;
@@ -27,10 +26,16 @@ public class ChessSurfaceView extends SurfaceView {
     protected Bitmap whitePawnImage;
     protected Bitmap whiteKnightImage;
     protected Bitmap whiteBishopImage;
+    protected Bitmap whiteRookImage;
+    protected Bitmap whiteKingImage;
+    protected Bitmap whiteQueenImage;
     protected Bitmap blackPawnImage;
     protected Bitmap blackKnightImage;
     protected Bitmap blackBishopImage;
+    protected Bitmap blackKingImage;
+    protected Bitmap blackQueenImage;
     protected Paint imagePaint;
+    protected Bitmap blackRookImage;
 
     public ChessSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -50,11 +55,17 @@ public class ChessSurfaceView extends SurfaceView {
         whitePawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.wp);
         whiteKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.wn);
         whiteBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.wb);
+        whiteRookImage = BitmapFactory.decodeResource(getResources(),R.drawable.wr);
         blackPawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.bp);
         blackBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
         blackKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.bn);
+        blackRookImage = BitmapFactory.decodeResource(getResources(),R.drawable.br);
         whitePawnImage = Bitmap.createScaledBitmap(whitePawnImage,120,120,false);
+        whiteRookImage = Bitmap.createScaledBitmap(whiteRookImage,120,120,false);
+        whiteKnightImage = Bitmap.createScaledBitmap(whiteKnightImage,120,120,false);
         blackPawnImage = Bitmap.createScaledBitmap(blackPawnImage,120,120,false);
+        blackRookImage = Bitmap.createScaledBitmap(blackRookImage,120,120,false);
+        blackKnightImage = Bitmap.createScaledBitmap(blackKnightImage,120,120,false);
         imagePaint = new Paint();
         imagePaint.setColor(Color.WHITE);
     }
@@ -98,6 +109,16 @@ public class ChessSurfaceView extends SurfaceView {
                 canvas.drawBitmap(blackPawnImage, 40 + (i * 115), 725, imagePaint);
             }
         }
+
+        //draw Rooks for white and black
+        canvas.drawBitmap(whiteRookImage,35,30,imagePaint);
+        canvas.drawBitmap(whiteRookImage,840,30,imagePaint);
+        canvas.drawBitmap(blackRookImage,35,840,imagePaint);
+        canvas.drawBitmap(blackRookImage,840,840,imagePaint);
+
+        //draw knights
+        canvas.drawBitmap(whiteKnightImage,493,380,imagePaint);
+        canvas.drawBitmap(blackKnightImage,383,490,imagePaint);
     }
 
     public void displayMovesLog(){
