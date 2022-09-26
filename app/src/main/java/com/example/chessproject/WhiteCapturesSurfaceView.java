@@ -12,6 +12,8 @@ import android.view.SurfaceView;
 public class WhiteCapturesSurfaceView extends SurfaceView {
 
     private Bitmap pawnImage;
+    private Paint imagePaint;
+
     public WhiteCapturesSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
@@ -21,8 +23,8 @@ public class WhiteCapturesSurfaceView extends SurfaceView {
 
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Paint imagePaint = new Paint();
-        imagePaint.setColor(Color.BLACK);
+        imagePaint = new Paint();
+        imagePaint.setColor(Color.WHITE);
         canvas.drawBitmap(pawnImage,0, 0, imagePaint);
     }
 }

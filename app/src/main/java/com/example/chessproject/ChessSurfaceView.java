@@ -1,6 +1,8 @@
 package com.example.chessproject;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -22,7 +24,9 @@ public class ChessSurfaceView extends SurfaceView {
 
     private float size;
 
-
+    private Bitmap whitePawnImage;
+    private Bitmap blackPawnImage;
+    private Paint imagePaint;
 
     public ChessSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -39,6 +43,13 @@ public class ChessSurfaceView extends SurfaceView {
         colorSquare = new Paint();
         colorSquare.setColor(Color.WHITE);
 
+
+        whitePawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.wp);
+        whitePawnImage = Bitmap.createScaledBitmap(whitePawnImage,120,120,false);
+        blackPawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.bp);
+        blackPawnImage = Bitmap.createScaledBitmap(blackPawnImage,120,120,false);
+        imagePaint = new Paint();
+        imagePaint.setColor(Color.WHITE);
     }
 
     protected void onDraw(Canvas canvas) {
@@ -50,7 +61,7 @@ public class ChessSurfaceView extends SurfaceView {
 
                 //alternate colors
                 if((i%2 == 0 && j%2 != 0) || (j%2 == 0 && i%2 != 0)){
-                    colorSquare.setColor(Color.BLACK);
+                    colorSquare.setColor(Color.rgb(1, 50, 32));
                 } else {
                     colorSquare.setColor(Color.WHITE);
                 }
@@ -58,6 +69,26 @@ public class ChessSurfaceView extends SurfaceView {
                 //draw rectangle
                 canvas.drawRect(left + (right - left) * i, top + (bottom - top) * j,
                         right + (right - left) * i, bottom + (bottom - top) * j, colorSquare);
+            }
+        }
+        for(int i = 0; i < 7; i++) {
+            if(i == 3) {
+                canvas.drawBitmap(whitePawnImage, 385, 265, imagePaint);
+            } else if(i == 5) {
+                canvas.drawBitmap(whitePawnImage, 615, 380, imagePaint);
+            } else {
+                canvas.drawBitmap(whitePawnImage, 40 + (i * 115), 150, imagePaint);
+            }
+        }
+        canvas.drawBitmap(whitePawnImage, 845, 380, imagePaint);
+
+        for(int i = 0; i < 7; i++) {
+            if(i == 2) {
+                canvas.drawBitmap(blackPawnImage, 270, 610, imagePaint);
+            } else if(i == 6) {
+                canvas.drawBitmap(blackPawnImage, 730, 610, imagePaint);
+            } else {
+                canvas.drawBitmap(blackPawnImage, 40 + (i * 115), 725, imagePaint);
             }
         }
     }
