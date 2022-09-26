@@ -23,8 +23,8 @@ public class BlackCapturesSurfaceView extends SurfaceView {
 
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        Bitmap imagePond = BitmapFactory.decodeResource(getResources(), R.drawable.pondImage2);
+        //Bitmap imagePond = BitmapFactory.decodeResource(getResources(), R.drawable.pondImage2);
 
-        canvas.drawBitmap(imagePond, 150, 50, imagePaint);
+        //canvas.drawBitmap(imagePond, 150, 50, imagePaint);
     }
 }
