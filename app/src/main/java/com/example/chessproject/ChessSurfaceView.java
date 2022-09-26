@@ -24,10 +24,9 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
     private TextView movesLog;
 
     private int count = 0;
-    private ArrayList<Integer> x = new ArrayList<>();
-    private ArrayList<Integer> y = new ArrayList<>();
 
     private Paint highlightPaint;
+    private Paint dotPaint;
 
     private Paint textPaint;
 
@@ -56,6 +55,10 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
 
     private int[][] pieces;
     private int[][] board;
+    private ArrayList<Integer> movementX = new ArrayList<>();
+    private ArrayList<Integer> movementY = new ArrayList<>();
+    private int x = 8;
+    private int y = 8;
     private ArrayList<Integer> blackCaptures;
     private ArrayList<Integer> whiteCaptures;
 
@@ -65,7 +68,7 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
 
         blackCaptures = new ArrayList<>();
         whiteCaptures = new ArrayList<>();
-        board = new int[8][8];
+        board = new int[9][9];
         pieces = new int[8][8];
 
         for(int i = 0; i < pieces.length; i++) {
@@ -113,8 +116,11 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
         textPaint.setColor(Color.WHITE);
 
         highlightPaint = new Paint();
-        highlightPaint.setAlpha(50);
+        highlightPaint.setAlpha(10);
         highlightPaint.setColor(Color.YELLOW);
+
+        dotPaint = new Paint();
+        dotPaint.setColor(Color.GRAY);
 
 
         whitePawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.wp);
@@ -172,8 +178,10 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
         for(int i = 0; i < board.length; i++) {
             for(int j = 0; j < board[i].length; j++) {
                 if(board[i][j] == 1) {
-                    canvas.drawRect(left + (right - left) * i, top + (bottom - top) * j,
-                            right + (right - left) * i, bottom + (bottom - top) * j, highlightPaint);
+                    canvas.drawRect(left + (size) * i, top + (size) * j,
+                            right + (size) * i, bottom + (size) * j, highlightPaint);
+                } else if(board[i][j] == 2) {
+                    canvas.drawCircle(left + (size/2) + (size) * i, top + + (size/2) + (size) * j, (right - left)/5, dotPaint);
                 }
             }
         }
@@ -284,25 +292,64 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
             for(int i = 0; i < board.length; i++) {
-                for(int j = 0; j < board.length; j++) {
+                for(int j = 0; j < board[i].length; j++) {
                     if (motionEvent.getX() > 20 + (i * 115) && motionEvent.getX() < 175 + (i * 115)) {
                         if (motionEvent.getY() > 20 + (j * 115) && motionEvent.getY() < 175 + (j * 115)) {
-                            //board[y.get(0)][x.get(0)] = 0;
-                            if(x.size() > 0 && y.size() > 0) {
-                                if (board[i][j] == 1) {
-                                    board[i][j] = 0;
+                            for(int index = 0; index < movementX.size(); index++) {
+                                if(movementX.get(index) == i && movementY.get(index) == j) {
+                                    pieces[i][j] = pieces[x][y];
+                                    pieces[x][y] = 0;
+                                    board[x][y] = 0;
+                                    for(int k = 0; k < movementX.size(); k++) {
+                                        board[movementX.get(k)][movementY.get(k)] = 0;
+                                    }
+                                    movementX.clear();
+                                    movementY.clear();
                                     invalidate();
                                     return true;
                                 }
                             }
-                            if(x.size() == 2 && y.size() == 2) {
-                                board[y.get(0)][x.get(0)] = 0;
-                                x.remove(0);
-                                y.remove(0);
+                            if(x != 8 && y != 8) {
+                                if (pieces[i][j] == 0) {
+                                    board[x][y] = 0;
+                                    for (int index = 0; index < movementX.size(); index++) {
+                                        board[movementX.get(index)][movementY.get(index)] = 0;
+                                    }
+                                    x = 8;
+                                    y = 8;
+                                    movementX.clear();
+                                    movementY.clear();
+                                    invalidate();
+                                    return true;
+                                }
                             }
-                            board[i][j] = 1;
-                            x.add(j);
-                            y.add(i);
+                            x = i;
+                            y = j;
+                            board[x][y] = 1;
+                            if(pieces[x][y] == 1) {
+                                if(y == 6) {
+                                    movementX.add(x);
+                                    movementX.add(x);
+                                    movementY.add(y - 1);
+                                    movementY.add(y - 2);
+                                } else if(y > 0) {
+                                    movementX.add(x);
+                                    movementY.add(y - 1);
+                                }
+                            } else if(pieces[x][y] == -1) {
+                                if(y == 1) {
+                                    movementX.add(x);
+                                    movementX.add(x);
+                                    movementY.add(y + 1);
+                                    movementY.add(y + 2);
+                                } else if(y > 0) {
+                                    movementX.add(x);
+                                    movementY.add(y + 1);
+                                }
+                            }
+                            for(int k = 0; k < movementX.size(); k++) {
+                                board[movementX.get(k)][movementY.get(k)] = 2;
+                            }
                             invalidate();
                             return true;
                         }
