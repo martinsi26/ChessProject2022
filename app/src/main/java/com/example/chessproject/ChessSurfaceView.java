@@ -24,9 +24,13 @@ public class ChessSurfaceView extends SurfaceView {
 
     private float size;
 
-    private Bitmap whitePawnImage;
-    private Bitmap blackPawnImage;
-    private Paint imagePaint;
+    protected Bitmap whitePawnImage;
+    protected Bitmap whiteKnightImage;
+    protected Bitmap whiteBishopImage;
+    protected Bitmap blackPawnImage;
+    protected Bitmap blackKnightImage;
+    protected Bitmap blackBishopImage;
+    protected Paint imagePaint;
 
     public ChessSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,10 +47,13 @@ public class ChessSurfaceView extends SurfaceView {
         colorSquare = new Paint();
         colorSquare.setColor(Color.WHITE);
 
-
         whitePawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.wp);
-        whitePawnImage = Bitmap.createScaledBitmap(whitePawnImage,120,120,false);
+        whiteKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.wn);
+        whiteBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.wb);
         blackPawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.bp);
+        blackBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
+        blackKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.bn);
+        whitePawnImage = Bitmap.createScaledBitmap(whitePawnImage,120,120,false);
         blackPawnImage = Bitmap.createScaledBitmap(blackPawnImage,120,120,false);
         imagePaint = new Paint();
         imagePaint.setColor(Color.WHITE);

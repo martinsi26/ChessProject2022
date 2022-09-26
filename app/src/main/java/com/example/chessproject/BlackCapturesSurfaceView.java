@@ -9,33 +9,24 @@ import android.graphics.Paint;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 
-public class BlackCapturesSurfaceView extends SurfaceView {
-
-    private Bitmap pawnImage;
-    private Bitmap knightImage;
-    private Bitmap bishopImage;
+public class BlackCapturesSurfaceView extends ChessSurfaceView {
 
     public BlackCapturesSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
-
-        pawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.bp);
-        knightImage = BitmapFactory.decodeResource(getResources(),R.drawable.bn);
-        bishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
-        pawnImage = Bitmap.createScaledBitmap(pawnImage,120,100,false);
-        knightImage = Bitmap.createScaledBitmap(knightImage,120,100,false);
-        bishopImage = Bitmap.createScaledBitmap(bishopImage,120,100,false);
+        //resize images
+        blackPawnImage = Bitmap.createScaledBitmap(blackPawnImage,120,100,false);
+        blackKnightImage = Bitmap.createScaledBitmap(blackKnightImage,120,100,false);
+        blackBishopImage = Bitmap.createScaledBitmap(blackBishopImage,120,100,false);
     }
 
     protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        Paint imagePaint = new Paint();
         imagePaint.setColor(Color.WHITE);
-        canvas.drawBitmap(pawnImage,-10, 51, imagePaint);
-        canvas.drawBitmap(pawnImage,30,51,imagePaint);
-        canvas.drawBitmap(knightImage,100,51,imagePaint);
-        canvas.drawBitmap(bishopImage,195,51,imagePaint);
+        //draw images on the screen
+        canvas.drawBitmap(blackPawnImage,-10, 51, imagePaint);
+        canvas.drawBitmap(blackPawnImage,30,51,imagePaint);
+        canvas.drawBitmap(blackKnightImage,100,51,imagePaint);
+        canvas.drawBitmap(blackBishopImage,195,51,imagePaint);
 
     }
 }
