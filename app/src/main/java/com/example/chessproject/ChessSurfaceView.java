@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.SurfaceView;
 import android.widget.TextView;
@@ -14,6 +15,8 @@ public class ChessSurfaceView extends SurfaceView {
 
     private Paint colorSquare;
     private TextView movesLog;
+
+    private Paint textPaint;
 
     private float top;
     private float left;
@@ -34,8 +37,8 @@ public class ChessSurfaceView extends SurfaceView {
     protected Bitmap blackBishopImage;
     protected Bitmap blackKingImage;
     protected Bitmap blackQueenImage;
-    protected Paint imagePaint;
     protected Bitmap blackRookImage;
+    protected Paint imagePaint;
 
     public ChessSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -51,6 +54,10 @@ public class ChessSurfaceView extends SurfaceView {
 
         colorSquare = new Paint();
         colorSquare.setColor(Color.WHITE);
+
+        textPaint = new Paint();
+        textPaint.setColor(Color.WHITE);
+
 
         whitePawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.wp);
         whiteKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.wn);
@@ -144,6 +151,21 @@ public class ChessSurfaceView extends SurfaceView {
         //draw bishops
         canvas.drawBitmap(blackBishopImage,840,150,imagePaint);
         canvas.drawBitmap(whiteBishopImage,265,725,imagePaint);
+
+        //draw letters and numbers
+        textPaint.setTypeface(Typeface.create("Arial", Typeface.BOLD));
+        textPaint.setTextSize(30);
+        for(int i = 1; i <= 8; i++) {
+            canvas.drawText(String.valueOf(i), 15, 40 + (i * 115), textPaint);
+        }
+        canvas.drawText("a", 135, 985, textPaint);
+        canvas.drawText("b", 250, 985, textPaint);
+        canvas.drawText("c", 365, 985, textPaint);
+        canvas.drawText("d", 480, 985, textPaint);
+        canvas.drawText("e", 595, 985, textPaint);
+        canvas.drawText("f", 710, 985, textPaint);
+        canvas.drawText("g", 825, 985, textPaint);
+        canvas.drawText("h", 940, 985, textPaint);
     }
 
     public void displayMovesLog(){
