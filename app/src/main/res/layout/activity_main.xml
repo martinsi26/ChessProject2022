@@ -41,7 +41,9 @@
                 <com.example.chessproject.BlackCapturesSurfaceView
                     android:id="@+id/blackCaptures"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:background="#D3D3D3"
+                    />
 
             </LinearLayout>
 
@@ -76,7 +78,9 @@
                 <com.example.chessproject.WhiteCapturesSurfaceView
                     android:id="@+id/whiteCaptures"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
+                    android:layout_height="match_parent"
+                    android:background="#D3D3D3"
+                    />
             </LinearLayout>
 
         </LinearLayout>
