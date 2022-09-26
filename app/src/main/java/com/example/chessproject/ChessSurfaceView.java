@@ -26,6 +26,7 @@ public class ChessSurfaceView extends SurfaceView {
 
     private float size;
 
+    //images for chess pieces
     protected Bitmap whitePawnImage;
     protected Bitmap whiteKnightImage;
     protected Bitmap whiteBishopImage;
@@ -57,7 +58,6 @@ public class ChessSurfaceView extends SurfaceView {
 
         textPaint = new Paint();
         textPaint.setColor(Color.WHITE);
-
 
         whitePawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.wp);
         whiteKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.wn);
@@ -93,6 +93,7 @@ public class ChessSurfaceView extends SurfaceView {
         super.onDraw(canvas);
 
         //board initialization
+        //** Can this be optimized? it will repeatedly be drawn
         for(int j = 0; j < 8; j++) {
             for(int i = 0; i < 8; i++) {
 
