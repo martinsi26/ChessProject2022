@@ -12,7 +12,6 @@ import android.widget.TextView;
 public class ChessSurfaceView extends SurfaceView {
 
     private Paint colorSquare;
-    private Rect newRect;
     private TextView movesLog;
 
     private float top;
@@ -37,8 +36,6 @@ public class ChessSurfaceView extends SurfaceView {
         right = left + size;
         bottom = top + size;
 
-        //newRect = new Rect(100,100,200,200);
-
         colorSquare = new Paint();
         colorSquare.setColor(Color.WHITE);
 
@@ -50,6 +47,7 @@ public class ChessSurfaceView extends SurfaceView {
         //board initialization
         for(int j = 0; j < 8; j++) {
             for(int i = 0; i < 8; i++) {
+
                 //alternate colors
                 if((i%2 == 0 && j%2 != 0) || (j%2 == 0 && i%2 != 0)){
                     colorSquare.setColor(Color.BLACK);
