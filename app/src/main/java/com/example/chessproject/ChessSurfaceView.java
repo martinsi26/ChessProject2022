@@ -29,10 +29,10 @@ public class ChessSurfaceView extends SurfaceView {
         super(context, attrs);
         setWillNotDraw(false);
 
-        size = 75;
+        size = 115;
 
-        left = 100;
-        top = 30;
+        left = 40;
+        top = 40;
 
         right = left + size;
         bottom = top + size;
@@ -48,8 +48,8 @@ public class ChessSurfaceView extends SurfaceView {
         super.onDraw(canvas);
 
         //board initialization
-        for(int j = 1; j <= 8; j++) {
-            for(int i = 1; i <= 8; i++) {
+        for(int j = 0; j < 8; j++) {
+            for(int i = 0; i < 8; i++) {
                 //alternate colors
                 if((i%2 == 0 && j%2 != 0) || (j%2 == 0 && i%2 != 0)){
                     colorSquare.setColor(Color.BLACK);
