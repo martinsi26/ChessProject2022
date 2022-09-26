@@ -101,46 +101,49 @@ public class ChessSurfaceView extends SurfaceView {
                         right + (right - left) * i, bottom + (bottom - top) * j, colorSquare);
             }
         }
+
+        //draw pawns for black
         for(int i = 0; i < 7; i++) {
             if(i == 3) {
-                canvas.drawBitmap(whitePawnImage, 385, 265, imagePaint);
+                canvas.drawBitmap(blackPawnImage, 385, 265, imagePaint);
             } else if(i == 5) {
-                canvas.drawBitmap(whitePawnImage, 615, 380, imagePaint);
+                canvas.drawBitmap(blackPawnImage, 615, 380, imagePaint);
             } else {
-                canvas.drawBitmap(whitePawnImage, 40 + (i * 115), 150, imagePaint);
+                canvas.drawBitmap(blackPawnImage, 40 + (i * 115), 150, imagePaint);
             }
         }
-        canvas.drawBitmap(whitePawnImage, 845, 380, imagePaint);
+        canvas.drawBitmap(blackPawnImage, 845, 380, imagePaint);
 
+        //draw pawns for black
         for(int i = 0; i < 7; i++) {
             if(i == 2) {
-                canvas.drawBitmap(blackPawnImage, 270, 610, imagePaint);
+                canvas.drawBitmap(whitePawnImage, 270, 610, imagePaint);
             } else if(i == 6) {
-                canvas.drawBitmap(blackPawnImage, 730, 610, imagePaint);
+                canvas.drawBitmap(whitePawnImage, 730, 610, imagePaint);
             } else {
-                canvas.drawBitmap(blackPawnImage, 40 + (i * 115), 725, imagePaint);
+                canvas.drawBitmap(whitePawnImage, 40 + (i * 115), 725, imagePaint);
             }
         }
 
         //draw Rooks for white and black
-        canvas.drawBitmap(whiteRookImage,35,30,imagePaint);
-        canvas.drawBitmap(whiteRookImage,840,30,imagePaint);
-        canvas.drawBitmap(blackRookImage,35,840,imagePaint);
-        canvas.drawBitmap(blackRookImage,840,840,imagePaint);
+        canvas.drawBitmap(blackRookImage,37,35,imagePaint);
+        canvas.drawBitmap(blackRookImage,843,35,imagePaint);
+        canvas.drawBitmap(whiteRookImage,37,843,imagePaint);
+        canvas.drawBitmap(whiteRookImage,843,843,imagePaint);
 
         //draw knights
-        canvas.drawBitmap(whiteKnightImage,493,380,imagePaint);
-        canvas.drawBitmap(blackKnightImage,383,490,imagePaint);
+        canvas.drawBitmap(blackKnightImage,495,380,imagePaint);
+        canvas.drawBitmap(whiteKnightImage,383,495,imagePaint);
 
         //draw kings and queens
-        canvas.drawBitmap(whiteKingImage,500,30,imagePaint);
-        canvas.drawBitmap(blackKingImage,500,840,imagePaint);
-        canvas.drawBitmap(whiteQueenImage,380,30,imagePaint);
-        canvas.drawBitmap(blackQueenImage,380,840,imagePaint);
+        canvas.drawBitmap(blackKingImage,500,30,imagePaint);
+        canvas.drawBitmap(whiteKingImage,500,840,imagePaint);
+        canvas.drawBitmap(blackQueenImage,380,30,imagePaint);
+        canvas.drawBitmap(whiteQueenImage,380,840,imagePaint);
 
         //draw bishops
-        canvas.drawBitmap(whiteBishopImage,840,150,imagePaint);
-        canvas.drawBitmap(blackBishopImage,265,725,imagePaint);
+        canvas.drawBitmap(blackBishopImage,840,150,imagePaint);
+        canvas.drawBitmap(whiteBishopImage,265,725,imagePaint);
     }
 
     public void displayMovesLog(){

@@ -11,22 +11,22 @@ import android.view.SurfaceView;
 
 public class WhiteCapturesSurfaceView extends ChessSurfaceView {
 
-
     public WhiteCapturesSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
         //resize images
-        whitePawnImage = Bitmap.createScaledBitmap(whitePawnImage,120,100,false);
-        whiteKnightImage = Bitmap.createScaledBitmap(whiteKnightImage,120,100,false);
-        whiteBishopImage = Bitmap.createScaledBitmap(whiteBishopImage,120,100,false);
+        blackPawnImage = Bitmap.createScaledBitmap(blackPawnImage,120,100,false);
+        blackKnightImage = Bitmap.createScaledBitmap(blackKnightImage,120,100,false);
+        blackBishopImage = Bitmap.createScaledBitmap(blackBishopImage,120,100,false);
     }
 
     protected void onDraw(Canvas canvas) {
-        imagePaint.setColor(Color.BLACK);
+        imagePaint.setColor(Color.WHITE);
         //draw images on the screen
-        canvas.drawBitmap(whitePawnImage,-10, 50, imagePaint);
-        canvas.drawBitmap(whitePawnImage,30,50,imagePaint);
-        canvas.drawBitmap(whiteKnightImage,100,50,imagePaint);
-        canvas.drawBitmap(whiteBishopImage,195,50,imagePaint);
+        canvas.drawBitmap(blackPawnImage,-10, 51, imagePaint);
+        canvas.drawBitmap(blackPawnImage,30,51,imagePaint);
+        canvas.drawBitmap(blackKnightImage,100,51,imagePaint);
+        canvas.drawBitmap(blackBishopImage,195,51,imagePaint);
+
     }
 }
