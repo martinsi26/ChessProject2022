@@ -19,9 +19,9 @@ public class WhiteCapturesSurfaceView extends SurfaceView {
         super(context, attrs);
         setWillNotDraw(false);
         pawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.wp);
+        pawnImage = Bitmap.createScaledBitmap(pawnImage,120,100,false);
         knightImage = BitmapFactory.decodeResource(getResources(),R.drawable.wn);
         bishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.wb);
-        pawnImage = Bitmap.createScaledBitmap(pawnImage,120,100,false);
         knightImage = Bitmap.createScaledBitmap(knightImage,120,100,false);
         bishopImage = Bitmap.createScaledBitmap(bishopImage,120,100,false);
     }
@@ -30,10 +30,9 @@ public class WhiteCapturesSurfaceView extends SurfaceView {
         super.onDraw(canvas);
         Paint imagePaint = new Paint();
         imagePaint.setColor(Color.BLACK);
-        canvas.drawBitmap(pawnImage,-10, 50, imagePaint);
+        canvas.drawBitmap(pawnImage,0, 0, imagePaint);
         canvas.drawBitmap(pawnImage,30,50,imagePaint);
         canvas.drawBitmap(knightImage,100,50,imagePaint);
-        canvas.drawBitmap(bishopImage,195,50,imagePaint);
-
+        canvas.drawBitmap(bishopImage,195,50,imagePaint);    
     }
 }
