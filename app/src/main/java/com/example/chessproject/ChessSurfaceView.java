@@ -8,13 +8,26 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.SurfaceView;
+import android.view.View;
 import android.widget.TextView;
 
-public class ChessSurfaceView extends SurfaceView {
+import androidx.annotation.IntegerRes;
+
+import java.sql.Array;
+import java.util.ArrayList;
+
+public class ChessSurfaceView extends SurfaceView implements View.OnTouchListener {
 
     private Paint colorSquare;
     private TextView movesLog;
+
+    private int count = 0;
+    private ArrayList<Integer> x = new ArrayList<>();
+    private ArrayList<Integer> y = new ArrayList<>();
+
+    private Paint highlightPaint;
 
     private Paint textPaint;
 
@@ -40,9 +53,49 @@ public class ChessSurfaceView extends SurfaceView {
     protected Bitmap blackRookImage;
     protected Paint imagePaint;
 
+    private int[][] pieces;
+    private int[][] board;
+    private ArrayList<Integer> blackCaptures;
+    private ArrayList<Integer> whiteCaptures;
+
     public ChessSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
+
+        blackCaptures = new ArrayList<>();
+        whiteCaptures = new ArrayList<>();
+        board = new int[8][8];
+        pieces = new int[8][8];
+
+        for(int i = 0; i < pieces.length; i++) {
+            for(int j = 0; j < pieces[i].length; j++) {
+                if(j == 0) {
+                    pieces[0][j] = -4;
+                    pieces[1][j] = -3;
+                    pieces[2][j] = -2;
+                    pieces[3][j] = -5;
+                    pieces[4][j] = -6;
+                    pieces[5][j] = -2;
+                    pieces[6][j] = -3;
+                    pieces[7][j] = -4;
+                } else if(j == 1) {
+                    pieces[i][j] = -1;
+                } else if(j == 6) {
+                    pieces[i][j] = 1;
+                } else if(j == 7) {
+                    pieces[0][j] = 4;
+                    pieces[1][j] = 3;
+                    pieces[2][j] = 2;
+                    pieces[3][j] = 5;
+                    pieces[4][j] = 6;
+                    pieces[5][j] = 2;
+                    pieces[6][j] = 3;
+                    pieces[7][j] = 4;
+                } else {
+                    pieces[i][j] = 0;
+                }
+            }
+        }
 
         size = 115;
 
@@ -57,6 +110,10 @@ public class ChessSurfaceView extends SurfaceView {
 
         textPaint = new Paint();
         textPaint.setColor(Color.WHITE);
+
+        highlightPaint = new Paint();
+        highlightPaint.setAlpha(50);
+        highlightPaint.setColor(Color.YELLOW);
 
 
         whitePawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.wp);
@@ -93,11 +150,11 @@ public class ChessSurfaceView extends SurfaceView {
         super.onDraw(canvas);
 
         //board initialization
-        for(int j = 0; j < 8; j++) {
-            for(int i = 0; i < 8; i++) {
+        for(int i = 0; i < pieces.length; i++) {
+            for (int j = 0; j < pieces[i].length; j++) {
 
                 //alternate colors
-                if((i%2 == 0 && j%2 != 0) || (j%2 == 0 && i%2 != 0)){
+                if ((i % 2 == 0 && j % 2 != 0) || (j % 2 == 0 && i % 2 != 0)) {
                     colorSquare.setColor(Color.rgb(1, 50, 32));
                 } else {
                     colorSquare.setColor(Color.WHITE);
@@ -109,6 +166,49 @@ public class ChessSurfaceView extends SurfaceView {
             }
         }
 
+        //draw the highlight when touched
+        for(int i = 0; i < board.length; i++) {
+            for(int j = 0; j < board[i].length; j++) {
+                if(board[i][j] == 1) {
+                    canvas.drawRect(left + (right - left) * i, top + (bottom - top) * j,
+                            right + (right - left) * i, bottom + (bottom - top) * j, highlightPaint);
+                }
+            }
+        }
+
+        //draw all the pieces
+        for(int i = 0; i < pieces.length; i++) {
+            for(int j = 0; j < pieces[i].length; j++) {
+                if(pieces[i][j] == 1) {
+                    canvas.drawBitmap(whitePawnImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                } else if(pieces[i][j] == 2) {
+                    canvas.drawBitmap(whiteBishopImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                } else if(pieces[i][j] == 3) {
+                    canvas.drawBitmap(whiteKnightImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                } else if(pieces[i][j] == 4) {
+                    canvas.drawBitmap(whiteRookImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                } else if(pieces[i][j] == 5) {
+                    canvas.drawBitmap(whiteQueenImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                } else if(pieces[i][j] == 6) {
+                    canvas.drawBitmap(whiteKingImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                }
+                if(pieces[i][j] == -1) {
+                    canvas.drawBitmap(blackPawnImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                } else if(pieces[i][j] == -2) {
+                    canvas.drawBitmap(blackBishopImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                } else if(pieces[i][j] == -3) {
+                    canvas.drawBitmap(blackKnightImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                } else if(pieces[i][j] == -4) {
+                    canvas.drawBitmap(blackRookImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                } else if(pieces[i][j] == -5) {
+                    canvas.drawBitmap(blackQueenImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                } else if(pieces[i][j] == -6) {
+                    canvas.drawBitmap(blackKingImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
+                }
+            }
+        }
+
+        /*
         //draw pawns for black
         for(int i = 0; i < 7; i++) {
             if(i == 3) {
@@ -151,7 +251,7 @@ public class ChessSurfaceView extends SurfaceView {
         //draw bishops
         canvas.drawBitmap(blackBishopImage,840,150,imagePaint);
         canvas.drawBitmap(whiteBishopImage,265,725,imagePaint);
-
+        */
         //draw letters and numbers
         textPaint.setTypeface(Typeface.create("Arial", Typeface.BOLD));
         textPaint.setTextSize(30);
@@ -177,4 +277,37 @@ public class ChessSurfaceView extends SurfaceView {
     }
 
     public void setMovesLog(TextView view) {movesLog = view;}
+
+    @Override
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        if(motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
+            for(int i = 0; i < board.length; i++) {
+                for(int j = 0; j < board.length; j++) {
+                    if (motionEvent.getX() > 20 + (i * 115) && motionEvent.getX() < 175 + (i * 115)) {
+                        if (motionEvent.getY() > 20 + (j * 115) && motionEvent.getY() < 175 + (j * 115)) {
+                            //board[y.get(0)][x.get(0)] = 0;
+                            if(x.size() > 0 && y.size() > 0) {
+                                if (board[i][j] == 1) {
+                                    board[i][j] = 0;
+                                    invalidate();
+                                    return true;
+                                }
+                            }
+                            if(x.size() == 2 && y.size() == 2) {
+                                board[y.get(0)][x.get(0)] = 0;
+                                x.remove(0);
+                                y.remove(0);
+                            }
+                            board[i][j] = 1;
+                            x.add(j);
+                            y.add(i);
+                            invalidate();
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+        return false;
+    }
 }
