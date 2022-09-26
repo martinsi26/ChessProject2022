@@ -35,7 +35,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="left|center_vertical"
-                    android:text="Name"
+                    android:text="Computer"
                     android:textSize="20sp" />
 
                 <com.example.chessproject.BlackCapturesSurfaceView
@@ -72,7 +72,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:gravity="left|center_vertical"
-                    android:text="Name"
+                    android:text="Human"
                     android:textSize="20sp" />
 
                 <com.example.chessproject.WhiteCapturesSurfaceView

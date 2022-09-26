@@ -39,6 +39,7 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
 
     private float size;
 
+    //images for chess pieces
     protected Bitmap whitePawnImage;
     protected Bitmap whiteKnightImage;
     protected Bitmap whiteBishopImage;
@@ -150,8 +151,9 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
         super.onDraw(canvas);
 
         //board initialization
-        for(int i = 0; i < pieces.length; i++) {
-            for (int j = 0; j < pieces[i].length; j++) {
+        //** Can this be optimized? it will repeatedly be drawn
+        for(int j = 0; j < 8; j++) {
+            for(int i = 0; i < 8; i++) {
 
                 //alternate colors
                 if ((i % 2 == 0 && j % 2 != 0) || (j % 2 == 0 && i % 2 != 0)) {
