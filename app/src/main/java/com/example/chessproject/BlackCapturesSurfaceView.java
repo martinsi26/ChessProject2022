@@ -13,6 +13,7 @@ public class BlackCapturesSurfaceView extends SurfaceView {
 
     private Paint imagePaint;
 
+
     public BlackCapturesSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
