@@ -56,16 +56,28 @@ public class ChessSurfaceView extends SurfaceView {
         whiteKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.wn);
         whiteBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.wb);
         whiteRookImage = BitmapFactory.decodeResource(getResources(),R.drawable.wr);
+        whiteKingImage = BitmapFactory.decodeResource(getResources(),R.drawable.wk);
+        whiteQueenImage = BitmapFactory.decodeResource(getResources(),R.drawable.wq);
+        whiteBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.wb);
         blackPawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.bp);
         blackBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
         blackKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.bn);
         blackRookImage = BitmapFactory.decodeResource(getResources(),R.drawable.br);
+        blackKingImage = BitmapFactory.decodeResource(getResources(),R.drawable.bk);
+        blackQueenImage = BitmapFactory.decodeResource(getResources(),R.drawable.bq);
+        blackBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
         whitePawnImage = Bitmap.createScaledBitmap(whitePawnImage,120,120,false);
         whiteRookImage = Bitmap.createScaledBitmap(whiteRookImage,120,120,false);
         whiteKnightImage = Bitmap.createScaledBitmap(whiteKnightImage,120,120,false);
+        whiteKingImage = Bitmap.createScaledBitmap(whiteKingImage,120,120,false);
+        whiteQueenImage = Bitmap.createScaledBitmap(whiteQueenImage,120,120,false);
+        whiteBishopImage = Bitmap.createScaledBitmap(whiteBishopImage,120,120,false);
         blackPawnImage = Bitmap.createScaledBitmap(blackPawnImage,120,120,false);
         blackRookImage = Bitmap.createScaledBitmap(blackRookImage,120,120,false);
         blackKnightImage = Bitmap.createScaledBitmap(blackKnightImage,120,120,false);
+        blackKingImage = Bitmap.createScaledBitmap(blackKingImage,120,120,false);
+        blackQueenImage = Bitmap.createScaledBitmap(blackQueenImage,120,120,false);
+        blackBishopImage = Bitmap.createScaledBitmap(blackBishopImage,120,120,false);
         imagePaint = new Paint();
         imagePaint.setColor(Color.WHITE);
     }
@@ -119,6 +131,16 @@ public class ChessSurfaceView extends SurfaceView {
         //draw knights
         canvas.drawBitmap(whiteKnightImage,493,380,imagePaint);
         canvas.drawBitmap(blackKnightImage,383,490,imagePaint);
+
+        //draw kings and queens
+        canvas.drawBitmap(whiteKingImage,500,30,imagePaint);
+        canvas.drawBitmap(blackKingImage,500,840,imagePaint);
+        canvas.drawBitmap(whiteQueenImage,380,30,imagePaint);
+        canvas.drawBitmap(blackQueenImage,380,840,imagePaint);
+
+        //draw bishops
+        canvas.drawBitmap(whiteBishopImage,840,150,imagePaint);
+        canvas.drawBitmap(blackBishopImage,265,725,imagePaint);
     }
 
     public void displayMovesLog(){
