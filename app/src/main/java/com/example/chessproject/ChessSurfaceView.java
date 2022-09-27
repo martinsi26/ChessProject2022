@@ -277,6 +277,7 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
 
     public void setMovesLog(TextView view) {movesLog = view;}
 
+    //general method that determines what piece should move by their corresponding number
     public void moveWhitePieces() {
         if(pieces[x][y] == 1) {
             movePawn();
@@ -293,57 +294,66 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
         }
     }
 
-    public void movePawn() {
-        if(y == 6) {
-            movementX.add(x);
-            movementX.add(x);
-            movementY.add(y - 1);
-            movementY.add(y - 2);
-        } else if(y > 0) {
-            movementX.add(x);
-            movementY.add(y - 1);
-        }
-    }
-
-    public void moveBishop() {
+    //general diagonal movement for bishops and queen
+    public void generalDiagonalMove() {
         boolean stopUpLeft = false;
         boolean stopUpRight = false;
         boolean stopDownLeft = false;
         boolean stopDownRight = false;
 
-        for(int i = 1; i < 8; i++) {
+        for (int i = 1; i < 8; i++) {
             if (y - i >= 0 && x - i >= 0) {
-                if(pieces[x-i][y-i] != 0) {
+                if (pieces[x - i][y - i] < 0 && !stopUpLeft) {
+                    movementX.add(x - i);
+                    movementY.add(y - i);
                     stopUpLeft = true;
                 }
-                if(!stopUpLeft) {
+                if (pieces[x - i][y - i] > 0) {
+                    stopUpLeft = true;
+                }
+                if (!stopUpLeft) {
                     movementX.add(x - i);
                     movementY.add(y - i);
                 }
             }
             if (y - i >= 0 && x + i < 8) {
-                if(pieces[x+i][y-i] != 0) {
+                if (pieces[x + i][y - i] < 0 && !stopUpRight) {
+                    movementX.add(x + i);
+                    movementY.add(y - i);
                     stopUpRight = true;
                 }
-                if(!stopUpRight) {
+                if (pieces[x + i][y - i] > 0) {
+                    stopUpRight = true;
+                }
+                if (!stopUpRight) {
                     movementX.add(x + i);
                     movementY.add(y - i);
                 }
             }
             if (y + i < 8 && x - i >= 0) {
-                if(pieces[x-i][y+i] != 0) {
+                if (pieces[x - i][y + i] < 0 && !stopDownLeft) {
+                    movementX.add(x - i);
+                    movementY.add(y + i);
                     stopDownLeft = true;
                 }
-                if(!stopDownLeft) {
+                if (pieces[x - i][y + i] > 0) {
+                    stopDownLeft = true;
+                }
+                if (!stopDownLeft) {
                     movementX.add(x - i);
                     movementY.add(y + i);
                 }
             }
             if (y + i < 8 && x + i < 8) {
-                if(pieces[x+i][y+i] != 0) {
+                if (pieces[x + i][y + i] < 0 && !stopDownRight) {
+                    movementX.add(x + i);
+                    movementY.add(y + i);
                     stopDownRight = true;
                 }
-                if(!stopDownRight) {
+                if (pieces[x + i][y + i] > 0) {
+                    stopDownRight = true;
+                }
+                if (!stopDownRight) {
                     movementX.add(x + i);
                     movementY.add(y + i);
                 }
@@ -351,9 +361,113 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
         }
     }
 
+    //general movement for rooks and queen
+    public void generalSideMove() {
+        boolean stopLeft = false;
+        boolean stopRight = false;
+        boolean stopUp = false;
+        boolean stopDown = false;
+
+        for (int i = 1; i < 8; i++) {
+            if (x - i >= 0) {
+                if (pieces[x - i][y] < 0 && !stopLeft) {
+                    movementX.add(x - i);
+                    movementY.add(y);
+                    stopLeft = true;
+                }
+                if (pieces[x - i][y] > 0) {
+                    stopLeft = true;
+                }
+                if (!stopLeft) {
+                    movementX.add(x - i);
+                    movementY.add(y);
+                }
+            }
+            if (y - i >= 0) {
+                if (pieces[x][y - i] < 0 && !stopUp) {
+                    movementX.add(x);
+                    movementY.add(y - i);
+                    stopUp = true;
+                }
+                if (pieces[x][y - i] > 0) {
+                    stopUp = true;
+                }
+                if (!stopUp) {
+                    movementX.add(x);
+                    movementY.add(y - i);
+                }
+            }
+            if (y + i < 8) {
+                if (pieces[x][y + i] < 0 && !stopDown) {
+                    movementX.add(x);
+                    movementY.add(y + i);
+                    stopDown = true;
+                }
+                if (pieces[x][y + i] > 0) {
+                    stopDown = true;
+                }
+                if (!stopDown) {
+                    movementX.add(x);
+                    movementY.add(y + i);
+                }
+            }
+            if (x + i < 8) {
+                if (pieces[x + i][y] < 0 && !stopRight) {
+                    movementX.add(x + i);
+                    movementY.add(y);
+                    stopRight = true;
+                }
+                if (pieces[x + i][y] > 0) {
+                    stopRight = true;
+                }
+                if (!stopRight) {
+                    movementX.add(x + i);
+                    movementY.add(y);
+                }
+            }
+        }
+    }
+
+    //movement for the pawn
+    public void movePawn() {
+        if (y == 6) {
+            movementX.add(x);
+            movementX.add(x);
+            movementY.add(y - 1);
+            movementY.add(y - 2);
+        } else if (y > 0) {
+            if(pieces[x][y - 1] == 0) {
+                movementX.add(x);
+                movementY.add(y - 1);
+            }
+        }
+        if (x > 0 && y > 0) {
+            if (pieces[x - 1][y - 1] < 0) {
+                movementX.add(x - 1);
+                movementY.add(y - 1);
+            }
+        }
+        if (x < 7 && y > 0) {
+            if (pieces[x + 1][y - 1] < 0) {
+                movementX.add(x + 1);
+                movementY.add(y - 1);
+            }
+        }
+    }
+
+    //movement for the bishop
+    public void moveBishop() {
+        generalDiagonalMove();
+    }
+
+    //movement for the knight
     public void moveKnight() {
         if (x > 1 && y > 0) {
             if (pieces[x - 2][y - 1] == 0) {
+                movementX.add(x - 2);
+                movementY.add(y - 1);
+            }
+            if (pieces[x - 2][y - 1] < 0) {
                 movementX.add(x - 2);
                 movementY.add(y - 1);
             }
@@ -363,9 +477,17 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
                 movementX.add(x - 1);
                 movementY.add(y - 2);
             }
+            if (pieces[x - 1][y - 2] < 0) {
+                movementX.add(x - 1);
+                movementY.add(y - 2);
+            }
         }
         if (x < 6 && y < 7) {
             if (pieces[x + 2][y + 1] == 0) {
+                movementX.add(x + 2);
+                movementY.add(y + 1);
+            }
+            if (pieces[x + 2][y + 1] < 0) {
                 movementX.add(x + 2);
                 movementY.add(y + 1);
             }
@@ -375,9 +497,17 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
                 movementX.add(x + 1);
                 movementY.add(y + 2);
             }
+            if (pieces[x + 1][y + 2] < 0) {
+                movementX.add(x + 1);
+                movementY.add(y + 2);
+            }
         }
         if (x > 1 && y < 7) {
             if (pieces[x - 2][y + 1] == 0) {
+                movementX.add(x - 2);
+                movementY.add(y + 1);
+            }
+            if (pieces[x - 2][y + 1] < 0) {
                 movementX.add(x - 2);
                 movementY.add(y + 1);
             }
@@ -387,9 +517,17 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
                 movementX.add(x - 1);
                 movementY.add(y + 2);
             }
+            if (pieces[x - 1][y + 2] < 0) {
+                movementX.add(x - 1);
+                movementY.add(y + 2);
+            }
         }
         if (x < 6 && y > 0) {
             if (pieces[x + 2][y - 1] == 0) {
+                movementX.add(x + 2);
+                movementY.add(y - 1);
+            }
+            if (pieces[x + 2][y - 1] < 0) {
                 movementX.add(x + 2);
                 movementY.add(y - 1);
             }
@@ -399,21 +537,30 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
                 movementX.add(x + 1);
                 movementY.add(y - 2);
             }
+            if (pieces[x + 1][y - 2] < 0) {
+                movementX.add(x + 1);
+                movementY.add(y - 2);
+            }
         }
     }
 
+    //movement for the rook
     public void moveRook() {
-
+        generalSideMove();
     }
 
+    //movement for the queen
     public void moveQueen() {
-
+        generalDiagonalMove();
+        generalSideMove();
     }
 
+    //movement for the king
     public void moveKing() {
 
     }
 
+    //movement for the black pieces (computer)
     public void moveBlackPieces() {
 
     }
