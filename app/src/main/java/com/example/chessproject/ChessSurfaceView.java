@@ -20,22 +20,20 @@ import java.util.ArrayList;
 
 public class ChessSurfaceView extends SurfaceView implements View.OnTouchListener {
 
-    private Paint colorSquare;
     private TextView movesLog;
 
-    private int count = 0;
-
+    //paint variables
+    protected Paint imagePaint;
+    private Paint colorSquare;
     private Paint highlightPaint;
     private Paint dotPaint;
-
     private Paint textPaint;
 
+    //variables for creating board
     private float top;
     private float left;
-
     private float bottom;
     private float right;
-
     private float size;
 
     //images for chess pieces
@@ -51,7 +49,6 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
     protected Bitmap blackKingImage;
     protected Bitmap blackQueenImage;
     protected Bitmap blackRookImage;
-    protected Paint imagePaint;
 
     private int[][] pieces;
     private int[][] board;
@@ -59,18 +56,61 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
     private ArrayList<Integer> movementY = new ArrayList<>();
     private int x = 8;
     private int y = 8;
-    private ArrayList<Integer> blackCaptures;
-    private ArrayList<Integer> whiteCaptures;
 
     public ChessSurfaceView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setWillNotDraw(false);
 
-        blackCaptures = new ArrayList<>();
-        whiteCaptures = new ArrayList<>();
         board = new int[9][9];
         pieces = new int[8][8];
 
+        size = 115;
+        left = top = 40;
+        right = left + size;
+        bottom = top + size;
+
+        colorSquare = new Paint();
+        colorSquare.setColor(Color.WHITE);
+        textPaint = new Paint();
+        textPaint.setColor(Color.WHITE);
+        highlightPaint = new Paint();
+        highlightPaint.setColor(Color.YELLOW);
+        dotPaint = new Paint();
+        dotPaint.setColor(Color.GRAY);
+        imagePaint = new Paint();
+        imagePaint.setColor(Color.WHITE);
+
+        whitePawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.wp);
+        whiteKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.wn);
+        whiteBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.wb);
+        whiteRookImage = BitmapFactory.decodeResource(getResources(),R.drawable.wr);
+        whiteKingImage = BitmapFactory.decodeResource(getResources(),R.drawable.wk);
+        whiteQueenImage = BitmapFactory.decodeResource(getResources(),R.drawable.wq);
+        whiteBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.wb);
+        blackPawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.bp);
+        blackBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
+        blackKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.bn);
+        blackRookImage = BitmapFactory.decodeResource(getResources(),R.drawable.br);
+        blackKingImage = BitmapFactory.decodeResource(getResources(),R.drawable.bk);
+        blackQueenImage = BitmapFactory.decodeResource(getResources(),R.drawable.bq);
+        blackBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
+        whitePawnImage = Bitmap.createScaledBitmap(whitePawnImage,120,120,false);
+        whiteRookImage = Bitmap.createScaledBitmap(whiteRookImage,120,120,false);
+        whiteKnightImage = Bitmap.createScaledBitmap(whiteKnightImage,120,120,false);
+        whiteKingImage = Bitmap.createScaledBitmap(whiteKingImage,120,120,false);
+        whiteQueenImage = Bitmap.createScaledBitmap(whiteQueenImage,120,120,false);
+        whiteBishopImage = Bitmap.createScaledBitmap(whiteBishopImage,120,120,false);
+        blackPawnImage = Bitmap.createScaledBitmap(blackPawnImage,120,120,false);
+        blackRookImage = Bitmap.createScaledBitmap(blackRookImage,120,120,false);
+        blackKnightImage = Bitmap.createScaledBitmap(blackKnightImage,120,120,false);
+        blackKingImage = Bitmap.createScaledBitmap(blackKingImage,120,120,false);
+        blackQueenImage = Bitmap.createScaledBitmap(blackQueenImage,120,120,false);
+        blackBishopImage = Bitmap.createScaledBitmap(blackBishopImage,120,120,false);
+
+        placePieces();
+    }
+
+    public void placePieces() {
         for(int i = 0; i < pieces.length; i++) {
             for(int j = 0; j < pieces[i].length; j++) {
                 if(j == 0) {
@@ -100,57 +140,6 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
                 }
             }
         }
-
-        size = 115;
-
-        left = 40;
-        top = 40;
-
-        right = left + size;
-        bottom = top + size;
-
-        colorSquare = new Paint();
-        colorSquare.setColor(Color.WHITE);
-
-        textPaint = new Paint();
-        textPaint.setColor(Color.WHITE);
-
-        highlightPaint = new Paint();
-        highlightPaint.setAlpha(10);
-        highlightPaint.setColor(Color.YELLOW);
-
-        dotPaint = new Paint();
-        dotPaint.setColor(Color.GRAY);
-
-
-        whitePawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.wp);
-        whiteKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.wn);
-        whiteBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.wb);
-        whiteRookImage = BitmapFactory.decodeResource(getResources(),R.drawable.wr);
-        whiteKingImage = BitmapFactory.decodeResource(getResources(),R.drawable.wk);
-        whiteQueenImage = BitmapFactory.decodeResource(getResources(),R.drawable.wq);
-        whiteBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.wb);
-        blackPawnImage = BitmapFactory.decodeResource(getResources(),R.drawable.bp);
-        blackBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
-        blackKnightImage = BitmapFactory.decodeResource(getResources(),R.drawable.bn);
-        blackRookImage = BitmapFactory.decodeResource(getResources(),R.drawable.br);
-        blackKingImage = BitmapFactory.decodeResource(getResources(),R.drawable.bk);
-        blackQueenImage = BitmapFactory.decodeResource(getResources(),R.drawable.bq);
-        blackBishopImage = BitmapFactory.decodeResource(getResources(),R.drawable.bb);
-        whitePawnImage = Bitmap.createScaledBitmap(whitePawnImage,120,120,false);
-        whiteRookImage = Bitmap.createScaledBitmap(whiteRookImage,120,120,false);
-        whiteKnightImage = Bitmap.createScaledBitmap(whiteKnightImage,120,120,false);
-        whiteKingImage = Bitmap.createScaledBitmap(whiteKingImage,120,120,false);
-        whiteQueenImage = Bitmap.createScaledBitmap(whiteQueenImage,120,120,false);
-        whiteBishopImage = Bitmap.createScaledBitmap(whiteBishopImage,120,120,false);
-        blackPawnImage = Bitmap.createScaledBitmap(blackPawnImage,120,120,false);
-        blackRookImage = Bitmap.createScaledBitmap(blackRookImage,120,120,false);
-        blackKnightImage = Bitmap.createScaledBitmap(blackKnightImage,120,120,false);
-        blackKingImage = Bitmap.createScaledBitmap(blackKingImage,120,120,false);
-        blackQueenImage = Bitmap.createScaledBitmap(blackQueenImage,120,120,false);
-        blackBishopImage = Bitmap.createScaledBitmap(blackBishopImage,120,120,false);
-        imagePaint = new Paint();
-        imagePaint.setColor(Color.WHITE);
     }
 
     protected void onDraw(Canvas canvas) {
@@ -288,6 +277,51 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
 
     public void setMovesLog(TextView view) {movesLog = view;}
 
+    public void moveWhitePieces() {
+        if(pieces[x][y] == 1) {
+            if(y == 6) {
+                movementX.add(x);
+                movementX.add(x);
+                movementY.add(y - 1);
+                movementY.add(y - 2);
+            } else if(y > 0) {
+                movementX.add(x);
+                movementY.add(y - 1);
+            }
+        } else if(pieces[x][y] == 2) {
+            for(int i = 0; i < 8; i++) {
+                if (y > 0 && x > 0) {
+                    movementX.add(x - 1);
+                    movementY.add(y - 1);
+                }
+                if (y > 0 && x < 8) {
+                    movementX.add(x + 1);
+                    movementY.add(y - 1);
+                }
+                if (y < 8 && x > 0) {
+                    movementX.add(x - 1);
+                    movementY.add(y + 1);
+                }
+                if (y < 8 && x < 8) {
+                    movementX.add(x + 1);
+                    movementY.add(y + 1);
+                }
+            }
+        } else if (pieces[x][y] == 3) {
+
+        } else if(pieces[x][y] == 4) {
+
+        } else if (pieces[x][y] == 5) {
+
+        } else if(pieces[x][y] == 6) {
+
+        }
+    }
+
+    public void moveBlackPieces() {
+
+    }
+
     @Override
     public boolean onTouch(View view, MotionEvent motionEvent) {
         if(motionEvent.getActionMasked() == MotionEvent.ACTION_DOWN) {
@@ -326,29 +360,12 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
                             x = i;
                             y = j;
                             board[x][y] = 1;
-                            if(pieces[x][y] == 1) {
-                                if(y == 6) {
-                                    movementX.add(x);
-                                    movementX.add(x);
-                                    movementY.add(y - 1);
-                                    movementY.add(y - 2);
-                                } else if(y > 0) {
-                                    movementX.add(x);
-                                    movementY.add(y - 1);
-                                }
-                            } else if(pieces[x][y] == -1) {
-                                if(y == 1) {
-                                    movementX.add(x);
-                                    movementX.add(x);
-                                    movementY.add(y + 1);
-                                    movementY.add(y + 2);
-                                } else if(y > 0) {
-                                    movementX.add(x);
-                                    movementY.add(y + 1);
-                                }
-                            }
-                            for(int k = 0; k < movementX.size(); k++) {
-                                board[movementX.get(k)][movementY.get(k)] = 2;
+
+                            moveWhitePieces();
+                            moveBlackPieces();
+
+                            for(int index = 0; index < movementX.size(); index++) {
+                                board[movementX.get(index)][movementY.get(index)] = 2;
                             }
                             invalidate();
                             return true;
