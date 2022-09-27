@@ -279,43 +279,139 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
 
     public void moveWhitePieces() {
         if(pieces[x][y] == 1) {
-            if(y == 6) {
-                movementX.add(x);
-                movementX.add(x);
-                movementY.add(y - 1);
-                movementY.add(y - 2);
-            } else if(y > 0) {
-                movementX.add(x);
-                movementY.add(y - 1);
-            }
+            movePawn();
         } else if(pieces[x][y] == 2) {
-            for(int i = 0; i < 8; i++) {
-                if (y > 0 && x > 0) {
-                    movementX.add(x - 1);
-                    movementY.add(y - 1);
+            moveBishop();
+        } else if (pieces[x][y] == 3) {
+            moveKnight();
+        } else if(pieces[x][y] == 4) {
+            moveRook();
+        } else if (pieces[x][y] == 5) {
+            moveQueen();
+        } else if(pieces[x][y] == 6) {
+            moveKing();
+        }
+    }
+
+    public void movePawn() {
+        if(y == 6) {
+            movementX.add(x);
+            movementX.add(x);
+            movementY.add(y - 1);
+            movementY.add(y - 2);
+        } else if(y > 0) {
+            movementX.add(x);
+            movementY.add(y - 1);
+        }
+    }
+
+    public void moveBishop() {
+        boolean stopUpLeft = false;
+        boolean stopUpRight = false;
+        boolean stopDownLeft = false;
+        boolean stopDownRight = false;
+
+        for(int i = 1; i < 8; i++) {
+            if (y - i >= 0 && x - i >= 0) {
+                if(pieces[x-i][y-i] != 0) {
+                    stopUpLeft = true;
                 }
-                if (y > 0 && x < 8) {
-                    movementX.add(x + 1);
-                    movementY.add(y - 1);
-                }
-                if (y < 8 && x > 0) {
-                    movementX.add(x - 1);
-                    movementY.add(y + 1);
-                }
-                if (y < 8 && x < 8) {
-                    movementX.add(x + 1);
-                    movementY.add(y + 1);
+                if(!stopUpLeft) {
+                    movementX.add(x - i);
+                    movementY.add(y - i);
                 }
             }
-        } else if (pieces[x][y] == 3) {
-
-        } else if(pieces[x][y] == 4) {
-
-        } else if (pieces[x][y] == 5) {
-
-        } else if(pieces[x][y] == 6) {
-
+            if (y - i >= 0 && x + i < 8) {
+                if(pieces[x+i][y-i] != 0) {
+                    stopUpRight = true;
+                }
+                if(!stopUpRight) {
+                    movementX.add(x + i);
+                    movementY.add(y - i);
+                }
+            }
+            if (y + i < 8 && x - i >= 0) {
+                if(pieces[x-i][y+i] != 0) {
+                    stopDownLeft = true;
+                }
+                if(!stopDownLeft) {
+                    movementX.add(x - i);
+                    movementY.add(y + i);
+                }
+            }
+            if (y + i < 8 && x + i < 8) {
+                if(pieces[x+i][y+i] != 0) {
+                    stopDownRight = true;
+                }
+                if(!stopDownRight) {
+                    movementX.add(x + i);
+                    movementY.add(y + i);
+                }
+            }
         }
+    }
+
+    public void moveKnight() {
+        if (x > 1 && y > 0) {
+            if (pieces[x - 2][y - 1] == 0) {
+                movementX.add(x - 2);
+                movementY.add(y - 1);
+            }
+        }
+        if (x > 0 && y > 1) {
+            if (pieces[x - 1][y - 2] == 0) {
+                movementX.add(x - 1);
+                movementY.add(y - 2);
+            }
+        }
+        if (x < 6 && y < 7) {
+            if (pieces[x + 2][y + 1] == 0) {
+                movementX.add(x + 2);
+                movementY.add(y + 1);
+            }
+        }
+        if (x < 7 && y < 6) {
+            if (pieces[x + 1][y + 2] == 0) {
+                movementX.add(x + 1);
+                movementY.add(y + 2);
+            }
+        }
+        if (x > 1 && y < 7) {
+            if (pieces[x - 2][y + 1] == 0) {
+                movementX.add(x - 2);
+                movementY.add(y + 1);
+            }
+        }
+        if (x > 0 && y < 6) {
+            if (pieces[x - 1][y + 2] == 0) {
+                movementX.add(x - 1);
+                movementY.add(y + 2);
+            }
+        }
+        if (x < 6 && y > 0) {
+            if (pieces[x + 2][y - 1] == 0) {
+                movementX.add(x + 2);
+                movementY.add(y - 1);
+            }
+        }
+        if (x < 7 && y > 1) {
+            if (pieces[x + 1][y - 2] == 0) {
+                movementX.add(x + 1);
+                movementY.add(y - 2);
+            }
+        }
+    }
+
+    public void moveRook() {
+
+    }
+
+    public void moveQueen() {
+
+    }
+
+    public void moveKing() {
+
     }
 
     public void moveBlackPieces() {
@@ -344,18 +440,21 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
                                 }
                             }
                             if(x != 8 && y != 8) {
-                                if (pieces[i][j] == 0) {
-                                    board[x][y] = 0;
-                                    for (int index = 0; index < movementX.size(); index++) {
-                                        board[movementX.get(index)][movementY.get(index)] = 0;
-                                    }
-                                    x = 8;
-                                    y = 8;
-                                    movementX.clear();
-                                    movementY.clear();
-                                    invalidate();
+                                board[x][y] = 0;
+                                for (int index = 0; index < movementX.size(); index++) {
+                                    board[movementX.get(index)][movementY.get(index)] = 0;
+                                }
+                                x = 8;
+                                y = 8;
+                                movementX.clear();
+                                movementY.clear();
+                                invalidate();
+                                if (pieces[i][j] <= 0) {
                                     return true;
                                 }
+                            }
+                            if(pieces[i][j] <= 0) {
+                                return true;
                             }
                             x = i;
                             y = j;
