@@ -76,7 +76,7 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
         highlightPaint = new Paint();
         highlightPaint.setColor(Color.YELLOW);
         dotPaint = new Paint();
-        dotPaint.setColor(Color.GRAY);
+        dotPaint.setColor(Color.LTGRAY);
         imagePaint = new Paint();
         imagePaint.setColor(Color.WHITE);
 
