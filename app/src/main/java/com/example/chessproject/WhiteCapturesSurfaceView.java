@@ -30,13 +30,15 @@ public class WhiteCapturesSurfaceView extends ChessSurfaceView {
     protected void onDraw(Canvas canvas) {
         imagePaint.setColor(Color.WHITE);
         //draw images on the screen
-        for(int i = 0; i < captures.size(); i++) {
-
+        for(int i = 0; i < capturedBlack.size(); i++) {
+            if(capturedBlack.get(i) == 1) {
+                canvas.drawBitmap(blackPawnImage, -10 + (i * 50), 51, imagePaint);
+            }
         }
-        canvas.drawBitmap(blackPawnImage,-10, 51, imagePaint);
+        /*canvas.drawBitmap(blackPawnImage,-10, 51, imagePaint);
         canvas.drawBitmap(blackPawnImage,30,51,imagePaint);
         canvas.drawBitmap(blackKnightImage,100,51,imagePaint);
-        canvas.drawBitmap(blackBishopImage,195,51,imagePaint);
+        canvas.drawBitmap(blackBishopImage,195,51,imagePaint);*/
 
     }
 }

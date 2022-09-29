@@ -54,6 +54,7 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
     private int[][] board;
     private ArrayList<Integer> movementX = new ArrayList<>();
     private ArrayList<Integer> movementY = new ArrayList<>();
+    public ArrayList<Integer> capturedBlack = new ArrayList<>();
     private int x = 8;
     private int y = 8;
 
@@ -574,6 +575,7 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
                         if (motionEvent.getY() > 20 + (j * 115) && motionEvent.getY() < 175 + (j * 115)) {
                             for(int index = 0; index < movementX.size(); index++) {
                                 if(movementX.get(index) == i && movementY.get(index) == j) {
+                                    capturedBlack.add(pieces[i][j]);
                                     pieces[i][j] = pieces[x][y];
                                     pieces[x][y] = 0;
                                     board[x][y] = 0;
