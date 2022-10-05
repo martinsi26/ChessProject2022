@@ -50,10 +50,10 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
     protected Bitmap blackQueenImage;
     protected Bitmap blackRookImage;
 
-    private int[][] pieces;
+    private Piece[][] pieces;
     private int[][] board;
-    private ArrayList<Integer> movementX = new ArrayList<>();
-    private ArrayList<Integer> movementY = new ArrayList<>();
+    private ArrayList<Integer> xMovement = new ArrayList<>();
+    private ArrayList<Integer> yMovement = new ArrayList<>();
     public ArrayList<Integer> capturedBlack = new ArrayList<>();
     private int x = 8;
     private int y = 8;
@@ -62,8 +62,8 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
         super(context, attrs);
         setWillNotDraw(false);
 
-        board = new int[9][9];
-        pieces = new int[8][8];
+        pieces = new Piece[8][8];
+        board = new int[8][8];
 
         size = 115;
         left = top = 40;
@@ -112,32 +112,33 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
     }
 
     public void placePieces() {
-        for(int i = 0; i < pieces.length; i++) {
-            for(int j = 0; j < pieces[i].length; j++) {
-                if(j == 0) {
-                    pieces[0][j] = -4;
-                    pieces[1][j] = -3;
-                    pieces[2][j] = -2;
-                    pieces[3][j] = -5;
-                    pieces[4][j] = -6;
-                    pieces[5][j] = -2;
-                    pieces[6][j] = -3;
-                    pieces[7][j] = -4;
-                } else if(j == 1) {
-                    pieces[i][j] = -1;
-                } else if(j == 6) {
-                    pieces[i][j] = 1;
-                } else if(j == 7) {
-                    pieces[0][j] = 4;
-                    pieces[1][j] = 3;
-                    pieces[2][j] = 2;
-                    pieces[3][j] = 5;
-                    pieces[4][j] = 6;
-                    pieces[5][j] = 2;
-                    pieces[6][j] = 3;
-                    pieces[7][j] = 4;
+        // Setting the initial position of all of the pieces
+        for (int row = 0; row < pieces.length; row++) {
+            for (int col = 0; col < pieces[row].length; col++) {
+                if (col == 0) {
+                    pieces[0][col] = new Piece(Piece.PieceType.ROOK, Piece.ColorType.BLACK);
+                    pieces[1][col] = new Piece(Piece.PieceType.KNIGHT, Piece.ColorType.BLACK);
+                    pieces[2][col] = new Piece(Piece.PieceType.BISHOP, Piece.ColorType.BLACK);
+                    pieces[3][col] = new Piece(Piece.PieceType.QUEEN, Piece.ColorType.BLACK);
+                    pieces[4][col] = new Piece(Piece.PieceType.KING, Piece.ColorType.BLACK);
+                    pieces[5][col] = new Piece(Piece.PieceType.BISHOP, Piece.ColorType.BLACK);
+                    pieces[6][col] = new Piece(Piece.PieceType.KNIGHT, Piece.ColorType.BLACK);
+                    pieces[7][col] = new Piece(Piece.PieceType.ROOK, Piece.ColorType.BLACK);
+                } else if (col == 1) {
+                    pieces[row][1] = new Piece(Piece.PieceType.PAWN, Piece.ColorType.BLACK);
+                } else if (col == 6) {
+                    pieces[row][6] = new Piece(Piece.PieceType.PAWN, Piece.ColorType.WHITE);
+                } else if (col == 7) {
+                    pieces[0][col] = new Piece(Piece.PieceType.ROOK, Piece.ColorType.WHITE);
+                    pieces[1][col] = new Piece(Piece.PieceType.KNIGHT, Piece.ColorType.WHITE);
+                    pieces[2][col] = new Piece(Piece.PieceType.BISHOP, Piece.ColorType.WHITE);
+                    pieces[3][col] = new Piece(Piece.PieceType.QUEEN, Piece.ColorType.WHITE);
+                    pieces[4][col] = new Piece(Piece.PieceType.KING, Piece.ColorType.WHITE);
+                    pieces[5][col] = new Piece(Piece.PieceType.BISHOP, Piece.ColorType.WHITE);
+                    pieces[6][col] = new Piece(Piece.PieceType.KNIGHT, Piece.ColorType.WHITE);
+                    pieces[7][col] = new Piece(Piece.PieceType.ROOK, Piece.ColorType.WHITE);
                 } else {
-                    pieces[i][j] = 0;
+                    pieces[row][col] = new Piece(Piece.PieceType.EMPTY, Piece.ColorType.EMPTY);
                 }
             }
         }
@@ -179,79 +180,35 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
         //draw all the pieces
         for(int i = 0; i < pieces.length; i++) {
             for(int j = 0; j < pieces[i].length; j++) {
-                if(pieces[i][j] == 1) {
+                if(pieces[i][j].getPieceType() == Piece.PieceType.PAWN && pieces[i][j].getPieceColor() == Piece.ColorType.WHITE) {
                     canvas.drawBitmap(whitePawnImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
-                } else if(pieces[i][j] == 2) {
+                } else if(pieces[i][j].getPieceType() == Piece.PieceType.BISHOP && pieces[i][j].getPieceColor() == Piece.ColorType.WHITE) {
                     canvas.drawBitmap(whiteBishopImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
-                } else if(pieces[i][j] == 3) {
+                } else if(pieces[i][j].getPieceType() == Piece.PieceType.KNIGHT && pieces[i][j].getPieceColor() == Piece.ColorType.WHITE) {
                     canvas.drawBitmap(whiteKnightImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
-                } else if(pieces[i][j] == 4) {
+                } else if(pieces[i][j].getPieceType() == Piece.PieceType.ROOK && pieces[i][j].getPieceColor() == Piece.ColorType.WHITE) {
                     canvas.drawBitmap(whiteRookImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
-                } else if(pieces[i][j] == 5) {
+                } else if(pieces[i][j].getPieceType() == Piece.PieceType.QUEEN && pieces[i][j].getPieceColor() == Piece.ColorType.WHITE) {
                     canvas.drawBitmap(whiteQueenImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
-                } else if(pieces[i][j] == 6) {
+                } else if(pieces[i][j].getPieceType() == Piece.PieceType.KING && pieces[i][j].getPieceColor() == Piece.ColorType.WHITE) {
                     canvas.drawBitmap(whiteKingImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
                 }
-                if(pieces[i][j] == -1) {
+                if(pieces[i][j].getPieceType() == Piece.PieceType.PAWN && pieces[i][j].getPieceColor() == Piece.ColorType.BLACK) {
                     canvas.drawBitmap(blackPawnImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
-                } else if(pieces[i][j] == -2) {
+                } else if(pieces[i][j].getPieceType() == Piece.PieceType.BISHOP && pieces[i][j].getPieceColor() == Piece.ColorType.BLACK) {
                     canvas.drawBitmap(blackBishopImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
-                } else if(pieces[i][j] == -3) {
+                } else if(pieces[i][j].getPieceType() == Piece.PieceType.KNIGHT && pieces[i][j].getPieceColor() == Piece.ColorType.BLACK) {
                     canvas.drawBitmap(blackKnightImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
-                } else if(pieces[i][j] == -4) {
+                } else if(pieces[i][j].getPieceType() == Piece.PieceType.ROOK && pieces[i][j].getPieceColor() == Piece.ColorType.BLACK) {
                     canvas.drawBitmap(blackRookImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
-                } else if(pieces[i][j] == -5) {
+                } else if(pieces[i][j].getPieceType() == Piece.PieceType.QUEEN && pieces[i][j].getPieceColor() == Piece.ColorType.BLACK) {
                     canvas.drawBitmap(blackQueenImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
-                } else if(pieces[i][j] == -6) {
+                } else if(pieces[i][j].getPieceType() == Piece.PieceType.KING && pieces[i][j].getPieceColor() == Piece.ColorType.BLACK) {
                     canvas.drawBitmap(blackKingImage, 40 + (i * 115), 40 + (j * 115), imagePaint);
                 }
             }
         }
 
-        /*
-        //draw pawns for black
-        for(int i = 0; i < 7; i++) {
-            if(i == 3) {
-                canvas.drawBitmap(blackPawnImage, 385, 265, imagePaint);
-            } else if(i == 5) {
-                canvas.drawBitmap(blackPawnImage, 615, 380, imagePaint);
-            } else {
-                canvas.drawBitmap(blackPawnImage, 40 + (i * 115), 150, imagePaint);
-            }
-        }
-        canvas.drawBitmap(blackPawnImage, 845, 380, imagePaint);
-
-        //draw pawns for black
-        for(int i = 0; i < 7; i++) {
-            if(i == 2) {
-                canvas.drawBitmap(whitePawnImage, 270, 610, imagePaint);
-            } else if(i == 6) {
-                canvas.drawBitmap(whitePawnImage, 730, 610, imagePaint);
-            } else {
-                canvas.drawBitmap(whitePawnImage, 40 + (i * 115), 725, imagePaint);
-            }
-        }
-
-        //draw Rooks for white and black
-        canvas.drawBitmap(blackRookImage,37,35,imagePaint);
-        canvas.drawBitmap(blackRookImage,843,35,imagePaint);
-        canvas.drawBitmap(whiteRookImage,37,843,imagePaint);
-        canvas.drawBitmap(whiteRookImage,843,843,imagePaint);
-
-        //draw knights
-        canvas.drawBitmap(blackKnightImage,495,380,imagePaint);
-        canvas.drawBitmap(whiteKnightImage,383,495,imagePaint);
-
-        //draw kings and queens
-        canvas.drawBitmap(blackKingImage,500,30,imagePaint);
-        canvas.drawBitmap(whiteKingImage,500,840,imagePaint);
-        canvas.drawBitmap(blackQueenImage,380,30,imagePaint);
-        canvas.drawBitmap(whiteQueenImage,380,840,imagePaint);
-
-        //draw bishops
-        canvas.drawBitmap(blackBishopImage,840,150,imagePaint);
-        canvas.drawBitmap(whiteBishopImage,265,725,imagePaint);
-        */
         //draw letters and numbers
         textPaint.setTypeface(Typeface.create("Arial", Typeface.BOLD));
         textPaint.setTextSize(30);
@@ -273,24 +230,24 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
         //append it to movesLog
         movesLog.setTextSize(20);
         movesLog.setText(
-        "1. d3 Nf6\n2. e4 e5\n3. Nf3 d6\n4. Be3 Nc6\n5.Be2 Bg4\n6. Nc3 Bxf3\n7. Qd2 Qd7\n8. O-O-O O-O-O\n9. Rf1 Bh5\n10. g3 Bxe2\n");
+                "1. d3 Nf6\n2. e4 e5\n3. Nf3 d6\n4. Be3 Nc6\n5.Be2 Bg4\n6. Nc3 Bxf3\n7. Qd2 Qd7\n8. O-O-O O-O-O\n9. Rf1 Bh5\n10. g3 Bxe2\n");
     }
 
     public void setMovesLog(TextView view) {movesLog = view;}
 
     //general method that determines what piece should move by their corresponding number
     public void moveWhitePieces() {
-        if(pieces[x][y] == 1) {
+        if(pieces[x][y].getPieceType() == Piece.PieceType.PAWN) {
             movePawn();
-        } else if(pieces[x][y] == 2) {
+        } else if(pieces[x][y].getPieceType() == Piece.PieceType.BISHOP) {
             moveBishop();
-        } else if (pieces[x][y] == 3) {
+        } else if (pieces[x][y].getPieceType() == Piece.PieceType.KNIGHT) {
             moveKnight();
-        } else if(pieces[x][y] == 4) {
+        } else if(pieces[x][y].getPieceType() == Piece.PieceType.ROOK) {
             moveRook();
-        } else if (pieces[x][y] == 5) {
+        } else if (pieces[x][y].getPieceType() == Piece.PieceType.QUEEN) {
             moveQueen();
-        } else if(pieces[x][y] == 6) {
+        } else if(pieces[x][y].getPieceType() == Piece.PieceType.KING) {
             moveKing();
         }
     }
@@ -304,59 +261,59 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
 
         for (int i = 1; i < 8; i++) {
             if (y - i >= 0 && x - i >= 0) {
-                if (pieces[x - i][y - i] < 0 && !stopUpLeft) {
-                    movementX.add(x - i);
-                    movementY.add(y - i);
+                if (pieces[x - i][y - i].getPieceColor() == Piece.ColorType.BLACK && !stopUpLeft) {
+                    xMovement.add(x - i);
+                    xMovement.add(y - i);
                     stopUpLeft = true;
                 }
-                if (pieces[x - i][y - i] > 0) {
+                if (pieces[x - i][y - i].getPieceColor() == Piece.ColorType.WHITE) {
                     stopUpLeft = true;
                 }
                 if (!stopUpLeft) {
-                    movementX.add(x - i);
-                    movementY.add(y - i);
+                    xMovement.add(x - i);
+                    yMovement.add(y - i);
                 }
             }
             if (y - i >= 0 && x + i < 8) {
-                if (pieces[x + i][y - i] < 0 && !stopUpRight) {
-                    movementX.add(x + i);
-                    movementY.add(y - i);
+                if (pieces[x + i][y - i].getPieceColor() == Piece.ColorType.BLACK && !stopUpRight) {
+                    xMovement.add(x + i);
+                    yMovement.add(y - i);
                     stopUpRight = true;
                 }
-                if (pieces[x + i][y - i] > 0) {
+                if (pieces[x + i][y - i].getPieceColor() == Piece.ColorType.WHITE) {
                     stopUpRight = true;
                 }
                 if (!stopUpRight) {
-                    movementX.add(x + i);
-                    movementY.add(y - i);
+                    xMovement.add(x + i);
+                    yMovement.add(y - i);
                 }
             }
             if (y + i < 8 && x - i >= 0) {
-                if (pieces[x - i][y + i] < 0 && !stopDownLeft) {
-                    movementX.add(x - i);
-                    movementY.add(y + i);
+                if (pieces[x - i][y + i].getPieceColor() == Piece.ColorType.BLACK && !stopDownLeft) {
+                    xMovement.add(x - i);
+                    yMovement.add(y + i);
                     stopDownLeft = true;
                 }
-                if (pieces[x - i][y + i] > 0) {
+                if (pieces[x - i][y + i].getPieceColor() == Piece.ColorType.WHITE) {
                     stopDownLeft = true;
                 }
                 if (!stopDownLeft) {
-                    movementX.add(x - i);
-                    movementY.add(y + i);
+                    xMovement.add(x - i);
+                    yMovement.add(y + i);
                 }
             }
             if (y + i < 8 && x + i < 8) {
-                if (pieces[x + i][y + i] < 0 && !stopDownRight) {
-                    movementX.add(x + i);
-                    movementY.add(y + i);
+                if (pieces[x + i][y + i].getPieceColor() == Piece.ColorType.BLACK && !stopDownRight) {
+                    xMovement.add(x + i);
+                    yMovement.add(y + i);
                     stopDownRight = true;
                 }
-                if (pieces[x + i][y + i] > 0) {
+                if (pieces[x + i][y + i].getPieceColor() == Piece.ColorType.WHITE) {
                     stopDownRight = true;
                 }
                 if (!stopDownRight) {
-                    movementX.add(x + i);
-                    movementY.add(y + i);
+                    xMovement.add(x + i);
+                    yMovement.add(y + i);
                 }
             }
         }
@@ -371,59 +328,59 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
 
         for (int i = 1; i < 8; i++) {
             if (x - i >= 0) {
-                if (pieces[x - i][y] < 0 && !stopLeft) {
-                    movementX.add(x - i);
-                    movementY.add(y);
+                if (pieces[x - i][y].getPieceColor() == Piece.ColorType.BLACK && !stopLeft) {
+                    xMovement.add(x - i);
+                    yMovement.add(y);
                     stopLeft = true;
                 }
-                if (pieces[x - i][y] > 0) {
+                if (pieces[x - i][y].getPieceColor() == Piece.ColorType.WHITE) {
                     stopLeft = true;
                 }
                 if (!stopLeft) {
-                    movementX.add(x - i);
-                    movementY.add(y);
+                    xMovement.add(x - i);
+                    yMovement.add(y);
                 }
             }
             if (y - i >= 0) {
-                if (pieces[x][y - i] < 0 && !stopUp) {
-                    movementX.add(x);
-                    movementY.add(y - i);
+                if (pieces[x][y - i].getPieceColor() == Piece.ColorType.BLACK && !stopUp) {
+                    xMovement.add(x);
+                    yMovement.add(y - i);
                     stopUp = true;
                 }
-                if (pieces[x][y - i] > 0) {
+                if (pieces[x][y - i].getPieceColor() == Piece.ColorType.WHITE) {
                     stopUp = true;
                 }
                 if (!stopUp) {
-                    movementX.add(x);
-                    movementY.add(y - i);
+                    xMovement.add(x);
+                    yMovement.add(y - i);
                 }
             }
             if (y + i < 8) {
-                if (pieces[x][y + i] < 0 && !stopDown) {
-                    movementX.add(x);
-                    movementY.add(y + i);
+                if (pieces[x][y + i].getPieceColor() == Piece.ColorType.BLACK && !stopDown) {
+                    xMovement.add(x);
+                    yMovement.add(y + i);
                     stopDown = true;
                 }
-                if (pieces[x][y + i] > 0) {
+                if (pieces[x][y + i].getPieceColor() == Piece.ColorType.WHITE) {
                     stopDown = true;
                 }
                 if (!stopDown) {
-                    movementX.add(x);
-                    movementY.add(y + i);
+                    xMovement.add(x);
+                    yMovement.add(y + i);
                 }
             }
             if (x + i < 8) {
-                if (pieces[x + i][y] < 0 && !stopRight) {
-                    movementX.add(x + i);
-                    movementY.add(y);
+                if (pieces[x + i][y].getPieceColor() == Piece.ColorType.BLACK && !stopRight) {
+                    xMovement.add(x + i);
+                    yMovement.add(y);
                     stopRight = true;
                 }
-                if (pieces[x + i][y] > 0) {
+                if (pieces[x + i][y].getPieceColor() == Piece.ColorType.WHITE) {
                     stopRight = true;
                 }
                 if (!stopRight) {
-                    movementX.add(x + i);
-                    movementY.add(y);
+                    xMovement.add(x + i);
+                    yMovement.add(y);
                 }
             }
         }
@@ -432,26 +389,30 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
     //movement for the pawn
     public void movePawn() {
         if (y == 6) {
-            movementX.add(x);
-            movementX.add(x);
-            movementY.add(y - 1);
-            movementY.add(y - 2);
+            if(pieces[x][y - 1].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x);
+                yMovement.add(y - 1);
+            }
+            if(pieces[x][y - 2].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x);
+                yMovement.add(y - 2);
+            }
         } else if (y > 0) {
-            if(pieces[x][y - 1] == 0) {
-                movementX.add(x);
-                movementY.add(y - 1);
+            if(pieces[x][y - 1].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x);
+                yMovement.add(y - 1);
             }
         }
         if (x > 0 && y > 0) {
-            if (pieces[x - 1][y - 1] < 0) {
-                movementX.add(x - 1);
-                movementY.add(y - 1);
+            if (pieces[x - 1][y - 1].getPieceColor() == Piece.ColorType.BLACK) {
+                xMovement.add(x - 1);
+                yMovement.add(y - 1);
             }
         }
         if (x < 7 && y > 0) {
-            if (pieces[x + 1][y - 1] < 0) {
-                movementX.add(x + 1);
-                movementY.add(y - 1);
+            if (pieces[x + 1][y - 1].getPieceColor() == Piece.ColorType.BLACK) {
+                xMovement.add(x + 1);
+                yMovement.add(y - 1);
             }
         }
     }
@@ -464,83 +425,83 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
     //movement for the knight
     public void moveKnight() {
         if (x > 1 && y > 0) {
-            if (pieces[x - 2][y - 1] == 0) {
-                movementX.add(x - 2);
-                movementY.add(y - 1);
+            if (pieces[x - 2][y - 1].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x - 2);
+                yMovement.add(y - 1);
             }
-            if (pieces[x - 2][y - 1] < 0) {
-                movementX.add(x - 2);
-                movementY.add(y - 1);
+            if (pieces[x - 2][y - 1].getPieceColor() == Piece.ColorType.BLACK) {
+                xMovement.add(x - 2);
+                yMovement.add(y - 1);
             }
         }
         if (x > 0 && y > 1) {
-            if (pieces[x - 1][y - 2] == 0) {
-                movementX.add(x - 1);
-                movementY.add(y - 2);
+            if (pieces[x - 1][y - 2].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x - 1);
+                yMovement.add(y - 2);
             }
-            if (pieces[x - 1][y - 2] < 0) {
-                movementX.add(x - 1);
-                movementY.add(y - 2);
+            if (pieces[x - 1][y - 2].getPieceColor() == Piece.ColorType.BLACK) {
+                xMovement.add(x - 1);
+                yMovement.add(y - 2);
             }
         }
         if (x < 6 && y < 7) {
-            if (pieces[x + 2][y + 1] == 0) {
-                movementX.add(x + 2);
-                movementY.add(y + 1);
+            if (pieces[x + 2][y + 1].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x + 2);
+                yMovement.add(y + 1);
             }
-            if (pieces[x + 2][y + 1] < 0) {
-                movementX.add(x + 2);
-                movementY.add(y + 1);
+            if (pieces[x + 2][y + 1].getPieceColor() == Piece.ColorType.BLACK) {
+                xMovement.add(x + 2);
+                yMovement.add(y + 1);
             }
         }
         if (x < 7 && y < 6) {
-            if (pieces[x + 1][y + 2] == 0) {
-                movementX.add(x + 1);
-                movementY.add(y + 2);
+            if (pieces[x + 1][y + 2].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x + 1);
+                yMovement.add(y + 2);
             }
-            if (pieces[x + 1][y + 2] < 0) {
-                movementX.add(x + 1);
-                movementY.add(y + 2);
+            if (pieces[x + 1][y + 2].getPieceColor() == Piece.ColorType.BLACK) {
+                xMovement.add(x + 1);
+                yMovement.add(y + 2);
             }
         }
         if (x > 1 && y < 7) {
-            if (pieces[x - 2][y + 1] == 0) {
-                movementX.add(x - 2);
-                movementY.add(y + 1);
+            if (pieces[x - 2][y + 1].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x - 2);
+                yMovement.add(y + 1);
             }
-            if (pieces[x - 2][y + 1] < 0) {
-                movementX.add(x - 2);
-                movementY.add(y + 1);
+            if (pieces[x - 2][y + 1].getPieceColor() == Piece.ColorType.BLACK) {
+                xMovement.add(x - 2);
+                yMovement.add(y + 1);
             }
         }
         if (x > 0 && y < 6) {
-            if (pieces[x - 1][y + 2] == 0) {
-                movementX.add(x - 1);
-                movementY.add(y + 2);
+            if (pieces[x - 1][y + 2].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x - 1);
+                yMovement.add(y + 2);
             }
-            if (pieces[x - 1][y + 2] < 0) {
-                movementX.add(x - 1);
-                movementY.add(y + 2);
+            if (pieces[x - 1][y + 2].getPieceColor() == Piece.ColorType.BLACK) {
+                xMovement.add(x - 1);
+                yMovement.add(y + 2);
             }
         }
         if (x < 6 && y > 0) {
-            if (pieces[x + 2][y - 1] == 0) {
-                movementX.add(x + 2);
-                movementY.add(y - 1);
+            if (pieces[x + 2][y - 1].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x + 2);
+                yMovement.add(y - 1);
             }
-            if (pieces[x + 2][y - 1] < 0) {
-                movementX.add(x + 2);
-                movementY.add(y - 1);
+            if (pieces[x + 2][y - 1].getPieceColor() == Piece.ColorType.BLACK) {
+                xMovement.add(x + 2);
+                yMovement.add(y - 1);
             }
         }
         if (x < 7 && y > 1) {
-            if (pieces[x + 1][y - 2] == 0) {
-                movementX.add(x + 1);
-                movementY.add(y - 2);
+            if (pieces[x + 1][y - 2].getPieceColor() == Piece.ColorType.EMPTY) {
+                xMovement.add(x + 1);
+                yMovement.add(y - 2);
             }
-            if (pieces[x + 1][y - 2] < 0) {
-                movementX.add(x + 1);
-                movementY.add(y - 2);
+            if (pieces[x + 1][y - 2].getPieceColor() == Piece.ColorType.BLACK) {
+                xMovement.add(x + 1);
+                yMovement.add(y - 2);
             }
         }
     }
@@ -573,36 +534,36 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
                 for(int j = 0; j < board[i].length; j++) {
                     if (motionEvent.getX() > 20 + (i * 115) && motionEvent.getX() < 175 + (i * 115)) {
                         if (motionEvent.getY() > 20 + (j * 115) && motionEvent.getY() < 175 + (j * 115)) {
-                            for(int index = 0; index < movementX.size(); index++) {
-                                if(movementX.get(index) == i && movementY.get(index) == j) {
-                                    capturedBlack.add(pieces[i][j]);
+                            for(int index = 0; index < xMovement.size(); index++) {
+                                if(xMovement.get(index) == i && yMovement.get(index) == j) {
+                                    //capturedBlack.add(pieces[i][j]);
                                     pieces[i][j] = pieces[x][y];
-                                    pieces[x][y] = 0;
+                                    pieces[x][y] = new Piece(Piece.PieceType.EMPTY, Piece.ColorType.EMPTY);
                                     board[x][y] = 0;
-                                    for(int k = 0; k < movementX.size(); k++) {
-                                        board[movementX.get(k)][movementY.get(k)] = 0;
+                                    for(int k = 0; k < xMovement.size(); k++) {
+                                        board[xMovement.get(k)][yMovement.get(k)] = 0;
                                     }
-                                    movementX.clear();
-                                    movementY.clear();
+                                    xMovement.clear();
+                                    yMovement.clear();
                                     invalidate();
                                     return true;
                                 }
                             }
                             if(x != 8 && y != 8) {
                                 board[x][y] = 0;
-                                for (int index = 0; index < movementX.size(); index++) {
-                                    board[movementX.get(index)][movementY.get(index)] = 0;
+                                for (int index = 0; index < xMovement.size(); index++) {
+                                    board[xMovement.get(index)][yMovement.get(index)] = 0;
                                 }
                                 x = 8;
                                 y = 8;
-                                movementX.clear();
-                                movementY.clear();
+                                xMovement.clear();
+                                yMovement.clear();
                                 invalidate();
-                                if (pieces[i][j] <= 0) {
+                                if (pieces[i][j].getPieceColor() == Piece.ColorType.BLACK || pieces[i][j].getPieceColor() == Piece.ColorType.EMPTY) {
                                     return true;
                                 }
                             }
-                            if(pieces[i][j] <= 0) {
+                            if(pieces[i][j].getPieceColor() == Piece.ColorType.BLACK || pieces[i][j].getPieceColor() == Piece.ColorType.EMPTY) {
                                 return true;
                             }
                             x = i;
@@ -612,8 +573,8 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
                             moveWhitePieces();
                             moveBlackPieces();
 
-                            for(int index = 0; index < movementX.size(); index++) {
-                                board[movementX.get(index)][movementY.get(index)] = 2;
+                            for(int index = 0; index < xMovement.size(); index++) {
+                                board[xMovement.get(index)][yMovement.get(index)] = 2;
                             }
                             invalidate();
                             return true;
