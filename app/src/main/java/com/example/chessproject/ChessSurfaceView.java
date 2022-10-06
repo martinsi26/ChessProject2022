@@ -263,7 +263,7 @@ public class ChessSurfaceView extends SurfaceView implements View.OnTouchListene
             if (y - i >= 0 && x - i >= 0) {
                 if (pieces[x - i][y - i].getPieceColor() == Piece.ColorType.BLACK && !stopUpLeft) {
                     xMovement.add(x - i);
-                    xMovement.add(y - i);
+                    yMovement.add(y - i);
                     stopUpLeft = true;
                 }
                 if (pieces[x - i][y - i].getPieceColor() == Piece.ColorType.WHITE) {
